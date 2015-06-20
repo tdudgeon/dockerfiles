@@ -1,0 +1,67 @@
+# Dockerfile for Lazar OpenTox servcies
+# There are lots of issues with this Dockerfile that need to be resolved.
+# Right now we focus on getting a functional build.
+
+FROM ubuntu:trusty
+MAINTAINER Tim Dudgeon <tdudgeon@informaticsmatters.com>
+
+RUN apt-get update && apt-get install -y\
+ openssl\
+ git\
+ sudo\
+ aptitude\
+ wget\
+ curl\
+ automake\
+ avahi-daemon\
+ build-essential\
+ cmake\
+ gnuplot\
+ libavahi-glib-dev\
+ libavahi-client-dev\
+ libcairo2-dev\
+ libglib2.0-dev\
+ libgsl0-dev\
+ libruby\
+ libpcre3-dev\
+ libraptor2-dev\
+ libreadline-dev\
+ libssl-dev\
+ libtool\
+ libxml2-dev\
+ libyaml-dev\
+ libqtwebkit-dev\
+ libncurses5-dev\
+ openjdk-6-jdk\
+ r-base-dev\
+ r-base\
+ uuid-dev\
+ xsltproc\
+ xvfb\
+ bundler
+
+# note: password should be changed if you want a secure setup
+RUN useradd -p $(openssl passwd -1 opentox) -m -s /bin/bash -G sudo opentox
+
+#RUN sh -c 'echo "\nDefaults timestamp_timeout=-1">>/etc/sudoers'
+RUN sh -c 'echo "\nopentox ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers'
+
+USER opentox
+WORKDIR /home/opentox
+#RUN echo 'opentox' | sudo -S ls
+COPY cache_date cache_date
+
+RUN git clone -b development --single-branch https://github.com/opentox/install.git
+WORKDIR install
+RUN ./install silent
+RUN bash service_install.sh
+
+# cleanup
+USER root
+#RUN sed -i "/Defaults timestamp_timeout=-1/d" /etc/sudoers
+RUN sed -i "/opentox ALL=(ALL) NOPASSWD: ALL/d" /etc/sudoers
+RUN deluser opentox sudo
+
+
+
+

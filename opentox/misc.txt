@@ -1,0 +1,95 @@
+openssl \
+git \
+sudo \
+aptitude \
+wget \
+automake \
+avahi-daemon \
+build-essential \
+cmake \
+curl \
+gnuplot \
+libavahi-glib-dev \
+libavahi-client-dev \
+libcairo2-dev \
+libglib2.0-dev \
+libgsl0-dev \
+libopenssl-ruby \
+libpcre3-dev \
+libraptor1-dev \
+libreadline-dev \
+libssl-dev \
+libtool \
+libxml2-dev \
+libyaml-dev \
+libqtwebkit-dev \
+ncurses-dev \
+openjdk-6-jdk \
+r-base-dev \
+r-base \
+uuid-dev \
+xsltproc \
+xvfb
+
+
+
+
+dpkg: warning: package not in database at line 13: libopenssl-ruby
+dpkg: warning: package not in database at line 14: libraptor1-dev
+dpkg: warning: package not in database at line 20: ncurses-dev
+dpkg: warning: found unknown packages; this might mean the available database
+is outdated, and needs to be updated through a frontend method
+
+
+ openssl\
+ git\
+ sudo\
+ aptitute\
+ wget\
+
+ automake\
+ avahi-daemon\
+ build-essential\
+ cmake\
+ gnuplot\
+ libavahi-glib-dev\
+ libavahi-client-dev\
+ libcairo2-dev\
+ libglib2.0-dev\
+ libgsl0-dev\
+ libruby\
+ libpcre3-dev\
+ libraptor1-dev\
+ libreadline-dev\
+ libssl-dev\
+ libtool\
+ libxml2-dev\
+ libyaml-dev\
+ libqtwebkit-dev\
+ libncurses5-dev\
+ openjdk-6-jdk\
+ r-base-dev\
+ r-base\
+ uuid-dev\
+ xsltproc\
+ xvfb
+
+
+
+
+
+
+
+I'm having a problem in a docker container that need to run the avahi daemon.
+I _think_ its the issue described here:
+https://github.com/lxc/lxc/issues/25
+where the avahi user has the same uid on the host as the container and more than 3 avahi daemon processes are not allowed to start.
+But I tried the suggestion of changing /etc/avahi/avahi-daemon.conf and increasing this  limit:
+rlimit-nproc=3
+but that didn't work.
+
+Does anyone have any experience with how to solve this?
+
+Thanks
+Tim
+
