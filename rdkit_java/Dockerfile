@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
  libboost-dev\
  libboost-python-dev\
  libboost-regex-dev\
- openjdk-8-jdk\
+ openjdk-7-jdk\
  swig2.0\
  git
 
