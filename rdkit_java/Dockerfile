@@ -19,7 +19,8 @@ RUN apt-get update && apt-get install -y \
  libboost-regex-dev\
  openjdk-7-jdk\
  swig2.0\
- git
+ git\
+ wget
 
 
 RUN git clone -b $RDKIT_BRANCH --single-branch https://github.com/rdkit/rdkit.git
@@ -27,9 +28,14 @@ RUN git clone -b $RDKIT_BRANCH --single-branch https://github.com/rdkit/rdkit.gi
 ENV RDBASE=/rdkit
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RDBASE/lib
 ENV PYTHONPATH=$PYTHONPATH:$RDBASE
+ENV JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
 
-RUN mkdir /rdkit/build
-WORKDIR /rdkit/build
+RUN mkdir $RDBASE/External/java_lib
+RUN wget -O $RDBASE/External/java_lib/junit.jar http://search.maven.org/remotecontent?filepath=junit/junit/4.12/junit-4.12.jar
+RUN wget -O $RDBASE/External/java_lib/hamcrest-core.jar http://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+
+RUN mkdir $RDBASE/build
+WORKDIR $RDBASE/build
 RUN cmake -D RDK_BUILD_SWIG_WRAPPERS=ON .. 
 RUN make
 RUN make install
