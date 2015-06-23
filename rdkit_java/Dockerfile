@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
  libboost-dev\
  libboost-python-dev\
  libboost-regex-dev\
- openjdk-7-jdk\
+ openjdk-8-jdk\
  swig2.0\
  git\
  wget
@@ -28,7 +28,7 @@ RUN git clone -b $RDKIT_BRANCH --single-branch https://github.com/rdkit/rdkit.gi
 ENV RDBASE=/rdkit
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RDBASE/lib
 ENV PYTHONPATH=$PYTHONPATH:$RDBASE
-ENV JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 RUN mkdir $RDBASE/External/java_lib
 RUN wget -O $RDBASE/External/java_lib/junit.jar http://search.maven.org/remotecontent?filepath=junit/junit/4.12/junit-4.12.jar
@@ -40,3 +40,4 @@ RUN cmake -D RDK_BUILD_SWIG_WRAPPERS=ON ..
 RUN make
 RUN make install
 
+WORKDIR /
